@@ -104,13 +104,13 @@ $ sudo qemu-system-x86_64 -enable-kvm \
 ```
 Please note that qemu runs with monitor connected to stdio.
 
-#Microsoft Edge
+# Microsoft Edge
 Open command prompt with administrator privileges and run:
 ```
 MicrosoftWebDriver.exe --host=10.0.2.15 --port=4444 --verbose
 ```
 ![EdgeDriver02](png/edgedriver02.png)
-#Internet Explorer
+# Internet Explorer
 Open command prompt as unprivileged user and run:
 ```
 C:\Windows\System32\IEDriverServer.exe --host=0.0.0.0 --port=4444 --verbose --log-level=DEBUG
@@ -137,13 +137,13 @@ $ sudo qemu-system-x86_64 -enable-kvm \
 ![EdgeStart](png/start.png)
 
 Create new browsers session using curl command:
-#Microsoft Edge
+# Microsoft Edge
 ```
 $ curl http://localhost:4444/session -d  '{"capabilities": {"alwaysMtch": {"browserName":"MicrosoftEdge"}}}'
 {"value":{"sessionId":"6CC53217-C889-4045-A5B3-059F2C49FDE6","capabilities":{"acceptInsecureCerts":false,"browserName":"MicrosoftEdge","browserVersion":"44.17763.1.0","pageLoadStrategy":"normal","platformName":"windows","setWindowRect":false,"timeouts":{"implicit":0,"pageLoad":300000,"script":30000},"proxy":{}}}}
 ```
 ![EdgeSession](png/edgedriver03.png)
-#Internet Explorer
+# Internet Explorer
 ```
 $ curl http://localhost:4444/session -d  '{"capabilities": {"alwaysMtch": {"browserName":"internet explorer"}}}'
 {
@@ -185,18 +185,18 @@ $ curl http://localhost:4444/session -d  '{"capabilities": {"alwaysMtch": {"brow
 ```
 ![IESession][png/iedriver02.png]
 Open url in the browser with curl (note you have to use session id from previous command:
-#Microsoft Edge
+# Microsoft Edge
 ```
 $ curl http://localhost:4444/session/6CC53217-C889-4045-A5B3-059F2C49FDE6/url -d  '{"url": "http://www.whatismybrowser.com/"}'
 ````
 ![EdgeBrowser](png/edgedriver04.png)
-#Internet Explorer
+# Internet Explorer
 ```
 $ curl http://localhost:4444/session/52c13555-6208-4f68-b8b9-899edc63f2af/url -d  '{"url": "http://www.whatismybrowser.com/"}'
 ```
 ![IEBrowser](png/iedriver03.png)
 
-##Bould Docker image
+## Build Docker image
 ```
 $ mv hdd.img snapshot.img image
 ```
