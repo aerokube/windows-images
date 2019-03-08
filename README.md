@@ -38,37 +38,38 @@ $ sudo qemu-system-x86_64 -enable-kvm \
         -drive file=Win10_1809Oct_English_x32.iso,media=cdrom \
         -drive file=virtio-win-0.1.141.iso,media=cdrom 
 ```
-Windows will boot from installation cdrom:
-![Step 01](png/install01.png)
+Install Windows from installation cdrom.
 Proceed to next step:
+![Step 01](png/install01.png)
+Click install now:
 ![Step 02](png/install02.png)
 Click install now:
 ![Step 03](png/install03.png)
-Choose edition:
+Enter license information:
 ![Step 04](png/install04.png)
 Choose edition:
 ![Step 05](png/install05.png)
-Choose edition:
+Read license agriment:
 ![Step 06](png/install06.png)
-Choose edition:
+Choose custom installation type:
 ![Step 07](png/install07.png)
-Choose edition:
+Now you have to install virtio storage driver. Click Load driver:
 ![Step 08](png/install08.png)
-Choose edition:
+Point to E:\viostor\w10\x86 directory:
 ![Step 09](png/install09.png)
-Choose edition:
+And click next:
 ![Step 10](png/install10.png)
-Choose edition:
+Choose installation partition and click next:
 ![Step 11](png/install11.png)
-Choose edition:
+Installation begins:
 ![Step 12](png/install12.png)
 Choose edition:
 ![Step 13](png/install13.png)
-Choose edition:
+Setup user and password, also set three security questions:
 ![Step 14](png/install14.png)
-Choose edition:
+Wait while installation finishes:
 ![Step 15](png/install15.png)
-Choose edition:
+Now you have to install ethernet virtio driver. Open device manager and click Update driver:
 ![Step 16](png/install16.png)
 Choose edition:
 ![Step 17](png/install17.png)
