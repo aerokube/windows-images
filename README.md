@@ -40,7 +40,39 @@ $ sudo qemu-system-x86_64 -enable-kvm \
 ```
 Windows will boot from installation cdrom:
 ![Step 01](png/install01.png)
-
+Proceed to next step:
+![Step 02](png/install02.png)
+Click install now:
+![Step 03](png/install03.png)
+Choose edition:
+![Step 04](png/install04.png)
+Choose edition:
+![Step 05](png/install05.png)
+Choose edition:
+![Step 06](png/install06.png)
+Choose edition:
+![Step 07](png/install07.png)
+Choose edition:
+![Step 08](png/install08.png)
+Choose edition:
+![Step 09](png/install09.png)
+Choose edition:
+![Step 10](png/install10.png)
+Choose edition:
+![Step 11](png/install11.png)
+Choose edition:
+![Step 12](png/install12.png)
+Choose edition:
+![Step 13](png/install13.png)
+Choose edition:
+![Step 14](png/install14.png)
+Choose edition:
+![Step 15](png/install15.png)
+Choose edition:
+![Step 16](png/install16.png)
+Choose edition:
+![Step 17](png/install17.png)
+Choose edition:
 
 Disable firewall
 
