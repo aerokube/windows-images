@@ -13,8 +13,8 @@ crw-rw---- 1 root kvm 10, 232 мар  8 19:38 /dev/kvm
 
 # Before begin
 
-* Download Windows 10 installation CD from (Microsoft Software Download site)[https://www.microsoft.com/en-us/software-download/windows10ISO]
-* Download virtio drivers (virtio-win-0.1.141.iso)[https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.141-1/virtio-win-0.1.141.iso]
+* Download Windows 10 installation CD from [Microsoft Software Download site](https://www.microsoft.com/en-us/software-download/windows10ISO)
+* Download virtio drivers [virtio-win-0.1.141.iso](https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.141-1/virtio-win-0.1.141.iso)
 
 Let assume that you now have two files in current directory:
 ```
