@@ -113,7 +113,7 @@ MicrosoftWebDriver.exe --host=10.0.2.15 --port=4444 --verbose
 # Internet Explorer
 Open command prompt as unprivileged user and run:
 ```
-C:\Windows\System32\IEDriverServer.exe --host=0.0.0.0 --port=4444 --verbose --log-level=DEBUG
+C:\Windows\System32\IEDriverServer.exe --host=0.0.0.0 --port=4444 --log-level=DEBUG
 ```
 ![IEDriver01](png/iedriver01.png)
 Minimize command prompt window when driver is up and running. Now we are ready to save vm state that will be used to quick browser start. Switch to terminal where qemu runs and type at qemu prompt:
@@ -183,7 +183,7 @@ $ curl http://localhost:4444/session -d  '{"capabilities": {"alwaysMtch": {"brow
 		"sessionId" : "52c13555-6208-4f68-b8b9-899edc63f2af"
 	}
 ```
-![IESession][png/iedriver02.png]
+![IESession](png/iedriver02.png)
 Open url in the browser with curl (note you have to use session id from previous command:
 # Microsoft Edge
 ```
