@@ -41,48 +41,58 @@ $ sudo qemu-system-x86_64 -enable-kvm \
 Install Windows from installation cdrom.
 Proceed to next step:
 ![Step 01](png/install01.png)
-Click install now:
+Click Install now:
 ![Step 02](png/install02.png)
-Click install now:
-![Step 03](png/install03.png)
 Enter license information:
+![Step 03](png/install03.png)
+Choose edition:
 ![Step 04](png/install04.png)
-Choose edition:
+Read and accept license agreement:
 ![Step 05](png/install05.png)
-Read license agriment:
-![Step 06](png/install06.png)
 Choose custom installation type:
-![Step 07](png/install07.png)
+![Step 06](png/install06.png)
 Now you have to install virtio storage driver. Click Load driver:
-![Step 08](png/install08.png)
+![Step 07](png/install07.png)
 Point to E:\viostor\w10\x86 directory:
+![Step 08](png/install08.png)
+Click next to install driver:
 ![Step 09](png/install09.png)
-And click next:
-![Step 10](png/install10.png)
 Choose installation partition and click next:
-![Step 11](png/install11.png)
-Installation begins:
-![Step 12](png/install12.png)
-Choose edition:
-![Step 13](png/install13.png)
-Setup user and password, also set three security questions:
-![Step 14](png/install14.png)
+![Step 10](png/install10.png)
 Wait while installation finishes:
-![Step 15](png/install15.png)
+![Step 11](png/install11.png)
+Setup user and password, also set three security questions, and other startup questions:
+![Step 12](png/install12.png)
+VM with Windows installed:
+![Step 13](png/install13.png)
 Now you have to install ethernet virtio driver. Open device manager and click Update driver:
+![Step 14](png/install14.png)
+Choose virtio cdrom and click OK:
+![Step 15](png/install15.png)
+Install driver:
 ![Step 16](png/install16.png)
-Choose edition:
+Connect to network:
 ![Step 17](png/install17.png)
-Choose edition:
+To be able to access webdriver server you have to disable windows firewall or setup firewall rule to open 4444 port:
+![Firewall](png/firewall.png)
 
-Disable firewall
+Now configure your system as you wish, install updates etc. Download IE driver from [here](https://www.seleniumhq.org/download/) and place in to C:\Windows\System32 directory.
+
+To setup Edge driver open command prompt as administrator and type:
+```
+DISM.exe /Online /Add-Capability /CapabilityName:Microsoft.WebDriver~~~~0.0.1.0
+```
+![EdgDriver01](png/edgedriver01.png)
+
+Shutdown VM.
+
+Now we are ready to create VM state and use it to quick driver start.
 
 Create overlay image that will contain VM state:
 ```
 $ qemu-img create -b hdd.img -f qcow2 snapshot.img
 Formatting 'snapshot.img', fmt=qcow2 size=42949672960 backing_file=hdd.img cluster_size=65536 lazy_refcounts=off refcount_bits=16
 ```
-
 Run VM using snapshot.img:
 ```
 $ sudo qemu-system-x86_64 -enable-kvm \
@@ -94,11 +104,18 @@ $ sudo qemu-system-x86_64 -enable-kvm \
 ```
 Please note that qemu runs with monitor connected to stdio.
 
+#Microsoft Edge
 Open command prompt with administrator privileges and run:
 ```
 MicrosoftWebDriver.exe --host=10.0.2.15 --port=4444 --verbose
 ```
 ![EdgeDriver02](png/edgedriver02.png)
+#Internet Explorer
+Open command prompt as unprivileged user and run:
+```
+C:\Windows\System32\IEDriverServer.exe --host=0.0.0.0 --port=4444 --verbose --log-level=DEBUG
+```
+![IEDriver01](png/iedriver01)
 Minimize command prompt window when driver is up and running. Now we are ready to save vm state that will be used to quick browser start. Switch to terminal where qemu runs and type at qemu prompt:
 ```
 (qemu) savevm windows
@@ -118,18 +135,68 @@ $ sudo qemu-system-x86_64 -enable-kvm \
         -loadvm windows
 ```
 ![EdgeStart](png/start.png)
+
 Create new browsers session using curl command:
+#Microsoft Edge
 ```
 $ curl http://localhost:4444/session -d  '{"capabilities": {"alwaysMtch": {"browserName":"MicrosoftEdge"}}}'
 {"value":{"sessionId":"6CC53217-C889-4045-A5B3-059F2C49FDE6","capabilities":{"acceptInsecureCerts":false,"browserName":"MicrosoftEdge","browserVersion":"44.17763.1.0","pageLoadStrategy":"normal","platformName":"windows","setWindowRect":false,"timeouts":{"implicit":0,"pageLoad":300000,"script":30000},"proxy":{}}}}
 ```
 ![EdgeSession](png/edgedriver03.png)
+#Internet Explorer
+```
+$ curl http://localhost:4444/session -d  '{"capabilities": {"alwaysMtch": {"browserName":"internet explorer"}}}'
+{
+	"value" : 
+	{
+		"capabilities" : 
+		{
+			"acceptInsecureCerts" : false,
+			"browserName" : "internet explorer",
+			"browserVersion" : "11",
+			"pageLoadStrategy" : "normal",
+			"platformName" : "windows",
+			"proxy" : {},
+			"se:ieOptions" : 
+			{
+				"browserAttachTimeout" : 0,
+				"elementScrollBehavior" : 0,
+				"enablePersistentHover" : true,
+				"ie.browserCommandLineSwitches" : "",
+				"ie.ensureCleanSession" : false,
+				"ie.fileUploadDialogTimeout" : 3000,
+				"ie.forceCreateProcessApi" : false,
+				"ignoreProtectedModeSettings" : false,
+				"ignoreZoomSetting" : false,
+				"initialBrowserUrl" : "http://localhost:4444/",
+				"nativeEvents" : true,
+				"requireWindowFocus" : false
+			},
+			"setWindowRect" : true,
+			"timeouts" : 
+			{
+				"implicit" : 0,
+				"pageLoad" : 300000,
+				"script" : 30000
+			}
+		},
+		"sessionId" : "52c13555-6208-4f68-b8b9-899edc63f2af"
+	}
+```
+![IESession][png/iedriver02.png]
 Open url in the browser with curl (note you have to use session id from previous command:
+#Microsoft Edge
 ```
 $ curl http://localhost:4444/session/6CC53217-C889-4045-A5B3-059F2C49FDE6/url -d  '{"url": "http://www.whatismybrowser.com/"}'
 ````
 ![EdgeBrowser](png/edgedriver04.png)
+#Internet Explorer
+```
+$ curl http://localhost:4444/session/52c13555-6208-4f68-b8b9-899edc63f2af/url -d  '{"url": "http://www.whatismybrowser.com/"}'
+```
+![IEBrowser](png/iedriver03.png)
 
+##Bould Docker image
 ```
 $ mv hdd.img snapshot.img image
 ```
