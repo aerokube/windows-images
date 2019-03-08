@@ -115,7 +115,7 @@ Open command prompt as unprivileged user and run:
 ```
 C:\Windows\System32\IEDriverServer.exe --host=0.0.0.0 --port=4444 --verbose --log-level=DEBUG
 ```
-![IEDriver01](png/iedriver01)
+![IEDriver01](png/iedriver01.png)
 Minimize command prompt window when driver is up and running. Now we are ready to save vm state that will be used to quick browser start. Switch to terminal where qemu runs and type at qemu prompt:
 ```
 (qemu) savevm windows
