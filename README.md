@@ -140,51 +140,14 @@ Create new browsers session using curl command:
 # Microsoft Edge
 ```
 $ curl http://localhost:4444/session -d  '{"capabilities": {"alwaysMtch": {"browserName":"MicrosoftEdge"}}}'
-{"value":{"sessionId":"6CC53217-C889-4045-A5B3-059F2C49FDE6","capabilities":{"acceptInsecureCerts":false,"browserName":"MicrosoftEdge","browserVersion":"44.17763.1.0","pageLoadStrategy":"normal","platformName":"windows","setWindowRect":false,"timeouts":{"implicit":0,"pageLoad":300000,"script":30000},"proxy":{}}}}
 ```
 ![EdgeSession](png/edgedriver03.png)
 # Internet Explorer
 ```
 $ curl http://localhost:4444/session -d  '{"capabilities": {"alwaysMtch": {"browserName":"internet explorer"}}}'
-{
-	"value" : 
-	{
-		"capabilities" : 
-		{
-			"acceptInsecureCerts" : false,
-			"browserName" : "internet explorer",
-			"browserVersion" : "11",
-			"pageLoadStrategy" : "normal",
-			"platformName" : "windows",
-			"proxy" : {},
-			"se:ieOptions" : 
-			{
-				"browserAttachTimeout" : 0,
-				"elementScrollBehavior" : 0,
-				"enablePersistentHover" : true,
-				"ie.browserCommandLineSwitches" : "",
-				"ie.ensureCleanSession" : false,
-				"ie.fileUploadDialogTimeout" : 3000,
-				"ie.forceCreateProcessApi" : false,
-				"ignoreProtectedModeSettings" : false,
-				"ignoreZoomSetting" : false,
-				"initialBrowserUrl" : "http://localhost:4444/",
-				"nativeEvents" : true,
-				"requireWindowFocus" : false
-			},
-			"setWindowRect" : true,
-			"timeouts" : 
-			{
-				"implicit" : 0,
-				"pageLoad" : 300000,
-				"script" : 30000
-			}
-		},
-		"sessionId" : "52c13555-6208-4f68-b8b9-899edc63f2af"
-	}
 ```
 ![IESession](png/iedriver02.png)
-Open url in the browser with curl (note you have to use session id from previous command:
+Open url in the browser with curl using session id returned by previous command:
 # Microsoft Edge
 ```
 $ curl http://localhost:4444/session/6CC53217-C889-4045-A5B3-059F2C49FDE6/url -d  '{"url": "http://www.whatismybrowser.com/"}'
