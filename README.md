@@ -86,7 +86,7 @@ Connect to network:
 To be able to access webdriver server you have to disable windows firewall or setup firewall rule to open 4444 port:
 ![Firewall](png/firewall.png)
 
-Now configure your system as you wish, install updates etc. Download IE driver from [here](https://www.seleniumhq.org/download/) and put it to ```C:\Windows\System32``` directory.
+Now configure your system as you wish, install updates etc. Download IE driver from [Selenium site](https://www.seleniumhq.org/download/) and put it to ```C:\Windows\System32``` directory.
 
 To setup Edge driver open command prompt as administrator and type:
 ```
