@@ -73,7 +73,7 @@ Choose installation partition and click next:
 ![Step 10](png/install10.png)
 Wait while installation finishes:
 ![Step 11](png/install11.png)
-Setup user and password, also set three security questions, and other post install configurations until you get Windows installed:
+Setup user and password, also set security questions, and other post install configurations until you get Windows installed:
 ![Step 13](png/install13.png)
 Now you have to install ethernet virtio driver. Open device manager and click Update driver:
 ![Step 14](png/install14.png)
