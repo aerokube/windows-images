@@ -103,7 +103,7 @@ Create overlay image that will contain VM state:
 ```
 $ qemu-img create -b hdd.img -f qcow2 snapshot.img
 ```
-Run VM using snapshot.img:
+Run VM using snapshot.img as filesystem:
 ```
 $ sudo qemu-system-x86_64 -enable-kvm \
         -machine q35 -smp sockets=1,cores=1,threads=2 -m 2048 \
