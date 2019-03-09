@@ -1,45 +1,50 @@
-# Requirements
+# Windows Images
 
-The only way to build windows docker images is on Linux, on bare metal machine or on VM with nested virtualization enabled.
-We use Ubuntu 18.04:
+This repository contains build instructions and Dockerfile to build Docker images with Windows-only browsers: `Internet Explorer` and `Microsoft Edge`. 
+
+## System Requirements
+
+1) Bare metal machine or on VM with nested virtualization enabled and Linux installed. This example was tested on `Ubuntu 18.04`.
 ```
 $ uname -a
 Linux desktop 4.15.0-46-generic #49-Ubuntu SMP Wed Feb 6 09:33:07 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
 ```
+To check that virtualization is supported - verify that `/dev/kvm` file is present:
 ```
 $ ls -l /dev/kvm
 crw-rw---- 1 root kvm 10, 232 мар  8 19:38 /dev/kvm
 ```
-Also, it is necessary to use the same qemu version on host where images are built and within docker image:
+
+2) [Qemu](https://www.qemu.org/) machine emulator installed. It is important to use the same `qemu` version on host machine where images are built and inside Docker image. To check `qemu` version type:
 ```
 $ qemu-system-x86_64 -version
 QEMU emulator version 2.11.1(Debian 1:2.11+dfsg-1ubuntu7.10)
 Copyright (c) 2003-2017 Fabrice Bellard and the QEMU Project developers
 ```
 
-# Before begin
-* Clone repository and change dir to it:
-```
-$ git clone https://github.com/aerokube/windows.git
-```
-```
-$ cd windows
-```
-* Download Windows 10 installation CD from [Microsoft Software Download](https://www.microsoft.com/en-us/software-download/windows10ISO) site
-* Download virtio drivers [virtio-win-0.1.141.iso](https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.141-1/virtio-win-0.1.141.iso)
+3) Windows license key
 
-Let assume that you now have two files in current directory:
+## Build Procedure
+### 1. Preparative Steps
+1.1) Clone this repository and change dir to it:
+```
+$ git clone https://github.com/aerokube/windows-images.git
+$ cd windows-images
+```
+1.2) Download **Windows 10** installation image from [Microsoft Software Download](https://www.microsoft.com/en-us/software-download/windows10ISO) website.
+1.3) Download **virtio** drivers [virtio-win-0.1.141.iso](https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.141-1/virtio-win-0.1.141.iso). In the next steps we assume that you now have two files in current directory:
 ```
 $ ls
 virtio-win-0.1.141.iso  Win10_1809Oct_English_x32.iso
 ```
-# Windows Installation
-Create hard disk image where Windows will be installed:
+
+### 2. Windows Installation
+2.1) Create hard disk image where Windows will be installed:
 ```
 $ qemu-img create -f qcow2 hdd.img 40G
 ```
 
-Then run virtual machine and begin installation:
+2.2) Run virtual machine and begin installation:
 ```
 $ sudo qemu-system-x86_64 -enable-kvm \
         -machine q35 -smp sockets=1,cores=1,threads=2 -m 2048 \
@@ -49,33 +54,49 @@ $ sudo qemu-system-x86_64 -enable-kvm \
         -drive file=Win10_1809Oct_English_x32.iso,media=cdrom \
         -drive file=virtio-win-0.1.141.iso,media=cdrom 
 ```
-Windows will boot from installation CD:
-Install Windows from installation cdrom.
-Proceed to next step:
+
+2.3) Windows will boot from installation image. Install Windows.
+
+2.3.1) Proceed to the next step:
 ![Step 01](png/install01.png)
-Click Install now:
+
+2.3.2) Click **Install now**:
 ![Step 02](png/install02.png)
-Enter license information:
+
+2.3.3) Enter license key:
 ![Step 03](png/install03.png)
-Choose edition:
+
+2.3.4) Choose Windows edition:
 ![Step 04](png/install04.png)
-Read and accept license agreement:
+
+2.3.5) Read and accept license agreement:
 ![Step 05](png/install05.png)
-Choose custom installation type:
+
+2.3.6) Choose custom installation type:
 ![Step 06](png/install06.png)
-Now you have to install virtio storage driver. Click Load driver:
+
+2.3.7) Now you have to install **virtio storage driver**. Click **Load driver**:
 ![Step 07](png/install07.png)
-Point to E:\viostor\w10\x86 directory:
+
+2.3.8) Point to `E:\viostor\w10\x86` directory:
 ![Step 08](png/install08.png)
-Click next to install driver:
+
+2.3.9) Click next to install driver:
 ![Step 09](png/install09.png)
-Choose installation partition and click next:
+
+2.3.10) Choose installation partition and click next:
 ![Step 10](png/install10.png)
-Wait while installation finishes:
+
+2.3.11) Wait while installation finishes:
 ![Step 11](png/install11.png)
-Setup user and password, also set security questions, and other post install configurations until you get Windows installed:
+
+2.3.12) Setup user and password:
+![Step 12](png/install12.png)
+
+2.3.13) Do other post-install configuration steps until you get Windows installed:
 ![Step 13](png/install13.png)
-Now you have to install ethernet virtio driver. Open device manager and click Update driver:
+
+2.3.14) Install **Ethernet virtio driver**. Open device manager and click **Update driver**:
 ![Step 14](png/install14.png)
 Choose virtio cdrom and click OK:
 ![Step 15](png/install15.png)
@@ -83,27 +104,35 @@ Install driver:
 ![Step 16](png/install16.png)
 Connect to network:
 ![Step 17](png/install17.png)
-To be able to access webdriver server you have to disable windows firewall or setup firewall rule to open 4444 port:
+
+2.3.15) Disable **Windows Firewall** or add firewall rule to allow access to port **4444**. This is needed to access webdriver binary port with Selenium test.
 ![Firewall](png/firewall.png)
 
-Now configure your system as you wish, install updates etc. Download IE driver from [Selenium site](https://www.seleniumhq.org/download/) and put it to ```C:\Windows\System32``` directory.
+2.3.16) Configure Windows as you wish: install updates, change screen resolution, apply registry modifications and so on.
 
-To setup Edge driver open command prompt as administrator and type:
+### 3. Adding WebDriver Binaries
+These binaries will handle Selenium test requests and launch respective browser. 
+
+* For **Internet Explorer** - download an archive with driver binary from [Selenium official website](https://www.seleniumhq.org/download/), unpack it and put the binary to ```C:\Windows\System32``` directory.
+
+* For **Microsoft Edge** web driver binary can be installed with the following command:
 ```
-DISM.exe /Online /Add-Capability /CapabilityName:Microsoft.WebDriver~~~~0.0.1.0
+> DISM.exe /Online /Add-Capability /CapabilityName:Microsoft.WebDriver~~~~0.0.1.0
 ```
 ![EdgDriver01](png/edgedriver01.png)
 
-Shutdown VM.
 
-# Quick boot
-Now we are ready to create VM state and use it to quick driver start.
+### 4. Creating Quick Boot Memory Snapshot
+This snapshot contains memory state and is needed to quickly restore virtual machine instead of doing full boot which is slow. To create it:
 
-Create overlay image that will contain VM state:
+4.1) Shutdown virtual machine.
+
+4.2) Create overlay image that will contain VM state:
 ```
 $ qemu-img create -b hdd.img -f qcow2 snapshot.img
 ```
-Run VM using snapshot.img as filesystem:
+
+4.3) Run VM using snapshot.img as filesystem:
 ```
 $ sudo qemu-system-x86_64 -enable-kvm \
         -machine q35 -smp sockets=1,cores=1,threads=2 -m 2048 \
@@ -112,21 +141,25 @@ $ sudo qemu-system-x86_64 -enable-kvm \
         -drive file=snapshot.img,media=disk,if=virtio \
         -monitor stdio
 ```
-Please note that qemu runs with monitor connected to stdio.
+Please note that `qemu` runs with monitor connected to stdio.
 
-# Microsoft Edge
-Open command prompt with administrator privileges and run:
+4.4) Run web driver binary command.
+
+* For **Microsoft Edge** - open command prompt **with administrator privileges** and run:
 ```
-MicrosoftWebDriver.exe --host=10.0.2.15 --port=4444 --verbose
+> MicrosoftWebDriver.exe --host=10.0.2.15 --port=4444 --verbose
 ```
 ![EdgeDriver02](png/edgedriver02.png)
-# Internet Explorer
-Open command prompt as unprivileged user and run:
+
+* For **Internet Explorer** - open command prompt **as unprivileged user** and run:
 ```
-C:\Windows\System32\IEDriverServer.exe --host=0.0.0.0 --port=4444 --log-level=DEBUG
+> C:\Windows\System32\IEDriverServer.exe --host=0.0.0.0 --port=4444 --log-level=DEBUG
 ```
 ![IEDriver01](png/iedriver01.png)
-Minimize command prompt window when driver is up and running. Now we are ready to save vm state that will be used to quick browser start. Switch to terminal where qemu runs and type at qemu prompt:
+
+4.5) Minimize command line prompt window when driver is up and running.
+ 
+4.6) Switch to terminal where **qemu** runs and type at qemu prompt:
 ```
 (qemu) savevm windows
 ```
@@ -134,8 +167,7 @@ Then type quit to stop VM:
 ```
 (qemu) quit
 ```
-
-Now we are able to start VM from snapshot:
+To start VM from snapshot manually use the following command:
 ```
 $ sudo qemu-system-x86_64 -enable-kvm \
         -machine q35 -smp sockets=1,cores=1,threads=2 -m 2048 \
@@ -144,32 +176,35 @@ $ sudo qemu-system-x86_64 -enable-kvm \
         -drive file=snapshot.img,media=disk,if=virtio \
         -loadvm windows
 ```
+The command above is used in `Dockerfile` entry point script.
+
 ![EdgeStart](png/start.png)
 
-## Docker Image
-Move filesystem and state files to image directory:
+### 5. Build Docker Image
+
+5.1) Move filesystem and state files to `image` directory in this repository:
 ```
 $ mv hdd.img snapshot.img image
-```
-```
 $ cd image
 ```
-For Microsoft Edge build image with:
+5.2) Build Docker image using provided Dockerfile:
 ```
-$ docker build -t windows/edge:18 .
+$ docker build -t windows/edge:18 . # For Microsoft Edge
 ```
 For Internet Explorer use:
 ```
-$ docker build -t windows/ie:11 .
+$ docker build -t windows/ie:11 . # For Internet Explorer
 ```
-Now we can run windows containers:
+
+5.3) Run a container from image:
 ```
-$ docker run -it --rm --privileged -p 4444:4444 -p 5900:5900 windows/edge:18
+$ docker run -it --rm --privileged -p 4444:4444 -p 5900:5900 windows/edge:18 # For Microsoft Edge
+$ docker run -it --rm --privileged -p 4444:4444 -p 5900:5900 windows/ie:11 # For Internet Explorer
 ```
-```
-$ docker run -it --rm --privileged -p 4444:4444 -p 5900:5900 windows/ie:11
-```
-Connect to ```vnc://localhost:5900``` using **selenoid** as password or run tests against ```http://localhost:4444```
+
+5.4) To see Windows screen inside running container - connect to ```vnc://localhost:5900``` using **selenoid** as password.
+
+5.5) To run Selenium tests - use ```http://localhost:4444``` as Selenium URL.
 
 
 
