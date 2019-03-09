@@ -169,7 +169,7 @@ $ docker run -it --rm --privileged -p 4444:4444 -p 5900:5900 windows/edge:18
 ```
 $ docker run -it --rm --privileged -p 4444:4444 -p 5900:5900 windows/ie:11
 ```
-Connect to ```vnc://localhost:5900``` using **aerokube** as password or run tests against ```http://localhost:4444```
+Connect to ```vnc://localhost:5900``` using **selenoid** as password or run tests against ```http://localhost:4444```
 
 
 

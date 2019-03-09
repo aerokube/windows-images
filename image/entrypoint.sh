@@ -42,7 +42,7 @@ until [ $retcode -eq 0 ]; do
   fi
 done
 
-x11vnc -display $DISPLAY -passwd aerokube -shared -forever -loop500 -rfbport 5900 -rfbportv6 5900 -logfile /dev/null &
+x11vnc -display $DISPLAY -passwd selenoid -shared -forever -loop500 -rfbport 5900 -rfbportv6 5900 -logfile /dev/null &
 X11VNC_PID=$!
 
 wait
