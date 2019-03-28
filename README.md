@@ -143,7 +143,19 @@ $ sudo qemu-system-x86_64 -enable-kvm \
 ```
 Please note that `qemu` runs with monitor connected to stdio.
 
-4.4) Run web driver binary command.
+4.4) Browser configuration (required only for **Internet Explorer**).
+
+Open **Internet Explorer**. The first time this browser is launched, it asks for the security setup. The option "Don't use recommended settings" need to be selected as follows:
+
+![IEConfig01](png/ieconfig01.png)
+
+Then, the Internet Options have to be changed. These options can be opened using the configuration button located at the top of Internet Explorer. In the tab "Security", the protect mode for the zones "Internet" and "Restricted sites" have to be disabled, as shown in the following picture:
+
+![IEConfig02](png/ieconfig02.png)
+
+At this point, you have to close Internet Explorer. Select the option "Always close all tabs" when Internet Explorer is closing. Finally, you have to open again Internet Explorer and double check that the protected mode is turned off (it can be seen in a message box at the bottom of the browser).
+
+4.5) Run web driver binary command.
 
 * For **Microsoft Edge** - open command prompt **with administrator privileges** and run:
 ```
@@ -157,9 +169,9 @@ Please note that `qemu` runs with monitor connected to stdio.
 ```
 ![IEDriver01](png/iedriver01.png)
 
-4.5) Minimize command line prompt window when driver is up and running.
+4.6) Minimize command line prompt window when driver is up and running.
  
-4.6) Switch to terminal where **qemu** runs and type at qemu prompt:
+4.7) Switch to terminal where **qemu** runs and type at qemu prompt:
 ```
 (qemu) savevm windows
 ```
