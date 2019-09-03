@@ -37,6 +37,9 @@ $ cd windows-images
 $ ls
 virtio-win-0.1.141.iso  Win10_1809Oct_English_x32.iso
 ```
+### Sign the driver 
+Windows 10 will not allows unsigned drivers to be installed. You will need to digitaly sign the drivers
+with cross-origin allowed to be able to load the drivers.
 
 ### 2. Windows Installation
 2.1) Create hard disk image where Windows will be installed:
